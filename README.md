@@ -82,7 +82,7 @@ net stop mysql命令（停止MYSQL命令）
 extension=php_mysql.dll
 
 
-### 2.2.安装Apache24
+### 2.3.安装Apache24
 
 安装vc14 VC_redist.x64.exe
 
