@@ -18,70 +18,13 @@
 
 ## 2.安装步骤
 
-### 2.1.安装php7
 
-解压php-7.1.11-Win32-VC14-x64.zip到D:\WAMP\
-
-#### php配置
-- 用编辑器打开D:\WAMP\php-7.1.11-Win32-VC14-x64目录下的php.ini-development复制为php.ini文件
-将 ;extension_dir = "ext" 修改为 extension_dir = "E:/Php7/ext"   (注意要把前面的分号去掉)
-打开(也就是把前面的分号去掉)用于连接 数据库（Mysql）的模块
-extension=php_mysql.dll
-
-
-### 2.2.安装Apache24
-
-安装vc14 VC_redist.x64.exe
-
-解压httpd-2.4.29-o102m-x64-vc14.zip到D:\WAMP\
-
-**编辑配置文件**
-进入D:\WAMP\httpd-2.4.29-o102m-x64-vc14\Apache24\conf,编辑httpd.conf
-修改以下内容：
-
-```
-Define SRVROOT D:\WAMP\httpd-2.4.29-o102m-x64-vc14\Apache24"
-ServerRoot "${SRVROOT}"
-
-ServerAdmin ismyblue@163.com
-
-//首先在apache24下新建/www
-
-DocumentRoot "${SRVROOT}/www"
-<Directory "${SRVROOT}/www">
-
-<IfModule dir_module>
-    DirectoryIndex index.php index.html index.htm
-</IfModule>
-
-/加载php模块
-
-在#LoadModule xml2enc_module modules/mod_xml2enc.so下面添加
-LOadModule php7_module "E:/Php7/php7apache2_4.dll"
-AddHandler application/x-httpd-php .php
- #指定php.ini的位置（注意：需要把E:/Php7下的php.ini-development 重命名为 php.ini）
-PHPIniDir "E:/Php7"
-
-```
->打开Apache安装目录下的“bin”文件夹中的“httpd.exe”测试服务器，如果一闪而过，则说明你的配置文件有问题。如果打开一个空的命令提示符，那么恭喜你。不要关闭这个命令提示符，打开浏览器，在地址栏输入“localhost”，回车，如果显示“It works!”则说明你的服务器配置成功。
-
->注意：如果没有安装vc14此处会报错！
-
->下一步要做的就是让系统服务中增加apache的服务。
-关闭上一步的命令窗口，开始----运行-----cmd，进入apapche的bin目录下，加入服务的命令为：httpd.exe -k install -n
-例如：httpd.exe -k install -n "Apache24"
-“服务”也会有localhost这个服务项。
-卸载命令：httpd.exe -k uninstall -n "Apache24"
-
->启动apache有两种方式：
-1、在系统服务中启动，启动后在浏览器输入localhost就会出现it works！
-2、可以通过Apache24\bin文件夹下的ApacheMonitor.exe来控制这个Apache。任务栏也会有显示这个软件的很方便的管理Apache的运行。
-至此，apache安装配置启动完毕。
-    
-
-### 2.3.安装Mysql
+### 2.1.安装Mysql
 
 解压到D:\WAMP\mysql-5.7.20-winx64
+配置环境变量MYSQL_HOME=D:\WAMP\mysql-5.7.20-winx64
+PATH=%PATH%;%MYSQL_HOME%\bin
+
 **新建一个ini配置文件mysql.ini**
 填入
 <pre>
@@ -117,3 +60,74 @@ skip-grant-tables
 
 注意：运行net start mysql命令（启动MYSQL命令）
 net stop mysql命令（停止MYSQL命令） 
+
+**更改mysql root密码**
+方法1： 用SET PASSWORD命令 
+首先登录MySQL。 
+格式：mysql> set password for 用户名@localhost = password('新密码'); 
+例子：mysql> set password for root@localhost = password('123'); 
+
+方法2：用mysqladmin 
+格式：mysqladmin -u用户名 -p旧密码 password 新密码 
+例子：mysqladmin -uroot -p123456 password 123 
+
+### 2.2.安装php7
+
+解压php-7.1.11-Win32-VC14-x64.zip到D:\WAMP\
+
+#### php配置
+- 用编辑器打开D:\WAMP\php-7.1.11-Win32-VC14-x64目录下的php.ini-development复制为php.ini文件
+将 ;extension_dir = "ext" 修改为 extension_dir = "D:\WAMP\php-7.1.11-Win32-VC14-x64"   (注意要把前面的分号去掉)
+打开(也就是把前面的分号去掉)用于连接 数据库（Mysql）的模块
+extension=php_mysql.dll
+
+
+### 2.2.安装Apache24
+
+安装vc14 VC_redist.x64.exe
+
+解压httpd-2.4.29-o102m-x64-vc14.zip到D:\WAMP\
+
+**编辑配置文件**
+进入D:\WAMP\httpd-2.4.29-o102m-x64-vc14\Apache24\conf,编辑httpd.conf
+修改以下内容：
+
+```
+Define SRVROOT D:\WAMP\httpd-2.4.29-o102m-x64-vc14\Apache24"
+ServerRoot "${SRVROOT}"
+
+ServerAdmin ismyblue@163.com
+
+//首先在apache24下新建/www
+
+DocumentRoot "${SRVROOT}/www"
+<Directory "${SRVROOT}/www">
+
+<IfModule dir_module>
+    DirectoryIndex index.php index.html index.htm
+</IfModule>
+
+/加载php模块
+
+在#LoadModule xml2enc_module modules/mod_xml2enc.so下面添加
+LOadModule php7_module "D:\WAMP\php-7.1.11-Win32-VC14-x64\php7apache2_4.dll"
+AddHandler application/x-httpd-php .php
+ #指定php.ini的位置（注意：需要把E:/Php7下的php.ini-development 重命名为 php.ini）
+PHPIniDir "D:\WAMP\php-7.1.11-Win32-VC14-x64\7"
+
+```
+>打开Apache安装目录下的“bin”文件夹中的“httpd.exe”测试服务器，如果一闪而过，则说明你的配置文件有问题。如果打开一个空的命令提示符，那么恭喜你。不要关闭这个命令提示符，打开浏览器，在地址栏输入“localhost”，回车，如果显示“It works!”则说明你的服务器配置成功。
+
+>注意：如果没有安装vc14此处会报错！
+
+>下一步要做的就是让系统服务中增加apache的服务。
+关闭上一步的命令窗口，开始----运行-----cmd，进入apapche的bin目录下，加入服务的命令为：httpd.exe -k install -n
+例如：httpd.exe -k install -n "Apache24"
+“服务”也会有localhost这个服务项。
+卸载命令：httpd.exe -k uninstall -n "Apache24"
+
+>启动apache有两种方式：
+1、在系统服务中启动，启动后在浏览器输入localhost就会出现it works！
+2、可以通过Apache24\bin文件夹下的ApacheMonitor.exe来控制这个Apache。任务栏也会有显示这个软件的很方便的管理Apache的运行。
+至此，apache安装配置启动完毕。
+    
